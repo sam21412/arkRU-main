@@ -1,0 +1,111 @@
+{% extends "oscar/base.html" %}
+
+
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static "oscar/css/styles1.css" %}" />
+{% endblock %}
+
+{% block layout %}
+
+<style>
+    .gradient-line {
+        width: 100%;
+        height: 3px; /* Высота линии */
+        background: linear-gradient(to right, rgba(0, 0, 0, 0), purple, rgba(0, 0, 0, 0));
+        /* Градиент от прозрачного к фиолетовому и обратно к прозрачному */
+    }
+  
+</style>
+
+
+
+
+</div   > 
+    {# Site logo/title, mini-basket, browse dropdown and searchbox #}
+
+
+    
+        {% block navigation %}
+            {% include "oscar/partials/nav_primary.html" %}
+        {% endblock %}
+
+    
+        
+        <div class="gradient-line"></div>
+
+        <div style = "padding-top: 40px" class="page-header-black">
+
+        </div>
+
+
+        <div   class="container page">
+            <div class="gradient-line"></div>
+         <div  style = "background-color: rgb(63, 20, 91); padding: 10px; border-radius: 10px 10px 0px 0px;" class="page_inner"> 
+        {% block mini_basket %}{% include "oscar/partials/mini_basket.html" %}{% endblock %}
+        </div>
+        
+    </div>
+    {# Main content of page - other layout templates may override this block #}
+ 
+   
+   
+    {% block content_wrapper %}
+
+        <div  class="container page">
+            
+            <div   class="page_inner">
+            
+                {% block breadcrumbs %}{% endblock %}
+                {% block header %}
+                    <div  class="page-header">
+                        <h1>{% block headertext %}{% endblock %}</h1>
+                    </div>
+                    
+                {% endblock %}
+                {% include "oscar/partials/alert_messages.html" %}
+                {% block subnavigation %}{% endblock %}
+                <div   class="content">
+                    {% block subheader %}{% endblock subheader %}
+
+                    {# Div exists for AJAX updates to entire content section #}
+                    <div id="content_inner"> {% block content %}{% endblock %}</div>
+                </div>
+                
+            </div>
+            
+        </div>
+
+        
+    {% endblock %}
+    
+    <div   class="container page">
+<div class="gradient-line"></div>
+    </div>
+    
+    <div style = "padding-top: 40px" class="page-header-black">
+    {% include "oscar/partials/footer.html" %}
+{% endblock %}
+
+{# Local scripts #}
+{% block scripts %}
+    {{ block.super }}
+    <!-- Twitter Bootstrap -->
+    <script src="{% static "oscar/js/bootstrap4/bootstrap.bundle.min.js" %}"></script>
+    <!-- Oscar -->
+    <script src="{% static "oscar/js/oscar/ui.js" %}"></script>
+{% endblock %}
+
+{% block extrascripts %}
+    {% include "oscar/partials/extrascripts.html" %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block onbodyload %}
+    {{ block.super }}
+    oscar.init();
+{% endblock %}
+

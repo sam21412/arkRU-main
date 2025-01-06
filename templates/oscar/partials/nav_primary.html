@@ -1,0 +1,142 @@
+{% load currency_filters %}
+{% load category_tags %}
+{% load i18n %}
+
+<nav style = "background: rgba(128,30,235, 0.2); /* Цвет фона с прозрачностью */
+padding: 0px;
+border-radius: 0px;
+backdrop-filter: blur(20px); /* Эффект матового стекла */
+width: 100%; padding: 0rem;"  class=" {% block nav_classes %}navbar navbar-expand-lg navbar-dark {% endblock %} ">
+    
+
+
+    {% block navbar_toggler %}
+    {% include "oscar/partials/brand.html" %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+    {% endblock %}
+
+
+
+    
+
+    {% block navbar_collapse %}
+        <div   class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% block nav %}
+                <ul class="navbar-nav mr-auto">
+                    {% block nav_items %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% block browse_store_text %}{% trans "Browse store" %}{% endblock %}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% category_tree depth=1 as tree_categories %}
+                                <a class="dropdown-item" href="{% url 'catalogue:index' %}">{% trans "All products" %}</a>
+                                {% if tree_categories %}
+                                    <div class="dropdown-divider"></div>
+                                    {% for tree_category in tree_categories %}
+                                        <a class="dropdown-item" href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                {% block nav_dropdown_extra_items %}
+                                    <a class="dropdown-item" href="{% url 'offer:list' %}">{% trans "Offers" %}</a>
+                                {% endblock %}
+                            </div>
+                        </li>
+                   {% endblock %}
+               </ul>
+            {% endblock %}
+
+            {% block nav_extra %}
+                {% include "oscar/partials/search.html" %}
+            {% endblock %}
+        </div>
+
+
+       
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".account-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+        
+                <div class="navbar-collapse account-collapse collapse">
+                    {% block nav_account_languages %}
+                    {% if LANGUAGES|length > 1 %}
+                        
+                        {% endif %}
+                    {% endblock %}
+                    <ul class="navbar-nav ml-md-auto d-md-flex">
+                        {% if user.is_authenticated %}
+                        {% block nav_account_navbar_authenticated %}
+                            <li class="nav-item mr-2">
+                                {% if num_unread_notifications > 0 %}
+                                    {# If user has new notifications - we change account link to go to inbox #}
+                                    <a href="{% url 'customer:notifications-inbox' %}" class="nav-link mt-2 mt-lg-0">
+                                        <i class="far fa-user mr-2"></i>
+                                        {% trans "Account" %}
+                                        <span class="badge badge-warning">{{ num_unread_notifications }}</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'customer:summary' %}" class="nav-link mt-2 mt-lg-0">
+                                        <i class="far fa-user mr-2"></i>
+                                        {% trans "Account" %}
+                                    </a>
+                                {% endif %}
+                            </li>
+                            {% if user.is_staff or perms.partner.dashboard_access %}
+                                <li class="nav-item mr-2">
+                                    <a href="{% url 'dashboard:index' %}" class="nav-link">
+                                        <i class="fas fa-list-ul mr-2"></i>
+                                        {% trans "Dashboard" %}
+                                    </a>
+                                </li>
+
+
+                            {% endif %}
+                            <li class="nav-item mr-2">
+                                <a id="logout_link" href="{% url 'customer:logout' %}" class="nav-link">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>
+                                    {% trans "Logout" %}
+                                </a>
+                            </li>
+                        {% endblock %}
+                        {% else %}
+                            <li class="nav-item mr-2">
+                                <a id="login_link" href="{% url 'customer:login' %}" class="nav-link">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>
+                                    {% trans "Login or register" %}
+                                </a>
+                            </li>
+
+                            <li class="nav-item mr-2">
+                                <a href="{% url 'social:begin' 'steam' %}?next={{ request.path }}">Войти через Steam</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                    <form id="language_selector" class="form-inline mb-0 mt-2 mt-lg-0" action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ language_neutral_url_path }}" />
+                        <div class="form-group mb-0">
+                            <select name="language" class="form-control">
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE%} selected="selected"{% endif %}>
+                                        {{ language.name_local }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button style="background-color:white" class="btn btn-outline-secondary ml-2" type="submit" data-loading-text="{% trans 'Submitting...' %}">{% trans "Go" %}</button>
+                    </form>
+                    
+                </div>
+            
+    
+
+
+    {% endblock %}
+</nav>

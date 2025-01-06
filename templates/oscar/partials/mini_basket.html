@@ -1,0 +1,22 @@
+{% load currency_filters %}
+{% load i18n %}
+{% load basket_tags %}
+
+<div style = "padding-left: 20px; padding-top: 10px;"  class="basket-mini col-sm-20"> <font color="white">
+    <strong>{% trans "Basket total:" %}</strong>
+    {% if request.basket.is_tax_known %}
+        {{ request.basket.total_incl_tax|currency:request.basket.currency }}
+    {% else %}
+        {{ request.basket.total_excl_tax|currency:request.basket.currency }}
+    {% endif %}
+
+    <div class="btn-group">
+      <button style = "color: white" type="button" class="{% block mini_basket_btn_classes %}btn btn-outline-secondary{% endblock %}" onclick="window.location.href='{% url 'basket:summary' %}';">{% trans "View basket" %}</button>
+      <button style = "color: white" type="button" class="{% block mini_basket_toggle_classes %}btn btn-outline-secondary dropdown-toggle dropdown-toggle-split{% endblock %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span style = "color: white" class="sr-only">Toggle Dropdown</span>
+      </button>
+      <div style = "max-width: 300px" class="{% block mini_basket_dropdown_classes %}dropdown-menu dropdown-menu-right{% endblock %}">
+        {% include "oscar/basket/partials/basket_quick.html" %}
+      </div>
+    </div>
+</div>
