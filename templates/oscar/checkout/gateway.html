@@ -7,9 +7,7 @@
     {% trans "Checkout gateway" %} | {{ block.super }}
 {% endblock %}
 
-{% block checkout_nav %}
-    {% include 'oscar/checkout/nav.html' with step=0 %}
-{% endblock %}
+
 
 {% block checkout_title %}{% trans "Who are you?" %}{% endblock %}
 

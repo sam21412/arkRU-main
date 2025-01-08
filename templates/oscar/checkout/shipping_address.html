@@ -5,9 +5,7 @@
     {% trans "Shipping address" %} | {{ block.super }}
 {% endblock %}
 
-{% block checkout_nav %}
-    {% include 'oscar/checkout/nav.html' with step=1 %}
-{% endblock %}
+
 
 {% block checkout_title %}{% trans "Shipping address" %}{% endblock %}
 

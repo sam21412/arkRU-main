@@ -285,3 +285,24 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+# YooKassa settings
+YOOKASSA_SHOP_ID = '1010385'
+YOOKASSA_SECRET_KEY = 'test_TOW-lUTCF_7C116ixfUEeamo_wOxu9KJZNprMx00I34'
+
+# Stripe settings
+STRIPE_PUBLIC_KEY = 'pk_test_51Qf0KG2NNnhMu51EnXv7RpsdCxMLoOKI759CG1zGLWVg63KnvqgM9eM8CxHgNWkzbKYI7g24E3GsGvzkhQTn8UNm00sF1A6r51'
+STRIPE_SECRET_KEY = 'sk_test_51Qf0KG2NNnhMu51EIGsQaz82pP9eZtu17H9aCDtnsTQ0egCZzFe0zBZpsPo7piao21yszEq8EAgzObqUWBnZfvVn00XWLsSESe'
+STRIPE_WEBHOOK_SECRET = 'whsec_ваш_webhook_secret_key'  # Замените на полученный ключ
+
+# Payment Methods
+PAYMENT_METHODS = {
+    'yookassa': {
+        'name': 'YooKassa',
+        'description': 'Pay with YooKassa',
+    },
+    'stripe': {
+        'name': 'Stripe',
+        'description': 'Pay with card via Stripe',
+    }
+}

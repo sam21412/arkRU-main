@@ -1,4 +1,4 @@
-{% extends "oscar/checkout/layout.html" %}
+{% extends "oscar/checkout/thank_you.html" %}
 {% load currency_filters %}
 {% load i18n %}
 {% load image_tags %}
@@ -9,9 +9,7 @@
     {% endblocktrans %} | {{ block.super }}
 {% endblock title %}
 
-{% block checkout_nav %}
-    {% include 'oscar/checkout/nav.html' with step=5 %}
-{% endblock %}
+
 
 {% block checkout_title %}
     {% blocktrans with number=order.number %}
@@ -20,6 +18,18 @@
 {% endblock %}
 
 {% block content %}
+    <div class="sub-header">
+        <h1>{% trans "Thank you for your order!" %}</h1>
+    </div>
+
+    {% if payment_status == 'succeeded' %}
+        <div class="alert alert-success">
+            {% blocktrans with amount=payment_amount currency=payment_currency %}
+                Payment of {{ amount }} {{ currency }} was successful!
+            {% endblocktrans %}
+        </div>
+    {% endif %}
+
     <p class="lead">
         {% blocktrans with number=order.number %}
         Your order has been placed and a confirmation email has been sent - your order number is

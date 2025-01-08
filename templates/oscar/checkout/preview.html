@@ -5,9 +5,6 @@
     {% trans "Order preview" %} | {{ block.super }}
 {% endblock %}
 
-{% block checkout_nav %}
-    {% include 'oscar/checkout/nav.html' with step=4 %}
-{% endblock %}
 
 {% block checkout_title %}
     {% trans "Preview order" %}
